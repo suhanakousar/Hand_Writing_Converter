@@ -80,7 +80,10 @@ Ans: Integration is the reverse process of differentiation. It is used to find a
                         <option value="blank">Blank White</option>
                         <option value="cream">Cream Paper</option>
                         <option value="aged">Aged Paper</option>
+                        <option value="parchment">Parchment</option>
+                        <option value="recycled">Recycled Paper</option>
                         <option value="notebook" selected>Notebook Ruled</option>
+                        <option value="legal_yellow">Legal Yellow Pad</option>
                         <option value="grid">Grid Paper</option>
                     </select>
                 </div>
@@ -88,11 +91,18 @@ Ans: Integration is the reverse process of differentiation. It is used to find a
                 <div class="control-group">
                     <label for="pageSize">Page Size</label>
                     <select id="pageSize">
-                        <option value="A4" selected>A4</option>
+                        <option value="A3">A3 (Large)</option>
+                        <option value="A4" selected>A4 (Standard)</option>
+                        <option value="A5">A5 (Small)</option>
                         <option value="Letter">Letter</option>
                         <option value="Legal">Legal</option>
                     </select>
                 </div>
+            </div>
+
+            <div class="utility-buttons" style="margin-top: 16px; display: flex; gap: 10px;">
+                <button id="clearTextBtn" class="btn btn-outline" style="flex: 1;">Clear Text</button>
+                <button id="copySampleBtn" class="btn btn-outline" style="flex: 1;">Load Sample</button>
             </div>
 
             <h3>Realism Effects</h3>

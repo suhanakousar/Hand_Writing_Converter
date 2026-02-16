@@ -19,6 +19,8 @@ const generateBtn = document.getElementById('generateBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const downloadJpg = document.getElementById('downloadJpg');
 const downloadPng = document.getElementById('downloadPng');
+const clearTextBtn = document.getElementById('clearTextBtn');
+const copySampleBtn = document.getElementById('copySampleBtn');
 const previewPage = document.getElementById('previewPage');
 const previewContainer = document.getElementById('previewContainer');
 const pdfViewer = document.getElementById('pdfViewer');
@@ -263,6 +265,31 @@ downloadPng.addEventListener('click', () => {
         downloadFile(`/api/export/${currentFilename}/png`);
         statusBar.textContent = 'PNG export may not be available on all servers. PDF is always available.';
     }
+});
+
+clearTextBtn.addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear all text?')) {
+        textInput.value = '';
+        updateStats();
+        schedulePreview();
+    }
+});
+
+copySampleBtn.addEventListener('click', () => {
+    textInput.value = `HOME ASSIGNMENT
+
+Name: Jane Smith
+ID: 987654321
+Date: February 16, 2026
+Subject: Physics - Thermodynamics
+
+Q1. State the First Law of Thermodynamics.
+Ans: The first law of thermodynamics is a version of the law of conservation of energy, adapted for thermodynamic processes. It states that energy can neither be created nor destroyed, only transformed from one form to another.
+
+Q2. What is an isothermal process?
+Ans: An isothermal process is a type of thermodynamic process in which the temperature of the system remains constant (ΔT = 0). This typically occurs when a system is in contact with an outside thermal reservoir.`;
+    updateStats();
+    schedulePreview();
 });
 
 loadSettings();

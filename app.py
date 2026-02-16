@@ -44,6 +44,8 @@ register_fonts()
 
 PAGE_SIZES = {
     'A4': A4,
+    'A3': (297*mm, 420*mm),
+    'A5': (148*mm, 210*mm),
     'Letter': LETTER,
     'Legal': LEGAL,
 }
@@ -89,11 +91,41 @@ def draw_page_background(c, width, height, settings):
         c.setFillColor(HexColor('#F5E6C8'))
         c.rect(0, 0, width, height, fill=1, stroke=0)
         c.setFillColor(HexColor('#EAD5AA'))
-        for _ in range(15):
+        for _ in range(25):
             x = random.uniform(0, width)
             y = random.uniform(0, height)
-            r = random.uniform(2, 8)
+            r = random.uniform(1, 5)
             c.circle(x, y, r, fill=1, stroke=0)
+    elif page_style == 'recycled':
+        c.setFillColor(HexColor('#DCD6CB'))
+        c.rect(0, 0, width, height, fill=1, stroke=0)
+        c.setStrokeColor(HexColor('#C4BBAF'))
+        for _ in range(100):
+            x = random.uniform(0, width)
+            y = random.uniform(0, height)
+            c.line(x, y, x + random.uniform(1, 3), y + random.uniform(1, 3))
+    elif page_style == 'parchment':
+        c.setFillColor(HexColor('#FCF5E5'))
+        c.rect(0, 0, width, height, fill=1, stroke=0)
+        c.setStrokeColor(HexColor('#F0E4C8'))
+        c.setLineWidth(0.5)
+        for _ in range(30):
+            x = random.uniform(0, width)
+            y = random.uniform(0, height)
+            c.circle(x, y, random.uniform(10, 30), fill=0, stroke=1)
+    elif page_style == 'legal_yellow':
+        c.setFillColor(HexColor('#FFF9C4'))
+        c.rect(0, 0, width, height, fill=1, stroke=0)
+        c.setStrokeColor(HexColor('#E0E0E0'))
+        c.setLineWidth(0.3)
+        line_spacing = settings.get('line_spacing', 28)
+        y = height - 60
+        while y > 40:
+            c.line(margin_left, y, width - 30, y)
+            y -= line_spacing
+        c.setStrokeColor(HexColor('#FF9999'))
+        c.setLineWidth(0.8)
+        c.line(margin_left, height, margin_left, 0)
     elif page_style == 'notebook':
         c.setFillColor(HexColor('#FFFFFF'))
         c.rect(0, 0, width, height, fill=1, stroke=0)
