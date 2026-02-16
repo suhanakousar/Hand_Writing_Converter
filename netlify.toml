@@ -1,0 +1,8 @@
+[build]
+  command = "echo 'Flask apps need serverless functions or external backend'"
+  publish = "."
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/server"
+  status = 200

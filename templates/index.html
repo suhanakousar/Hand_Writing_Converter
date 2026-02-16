@@ -10,158 +10,231 @@
 <body>
     <header>
         <div class="header-content">
-            <h1>Handwritten Assignment Studio</h1>
-            <p class="tagline">Transform your text into realistic handwritten assignments</p>
+            <h1>✍️ Handwritten Assignment Studio</h1>
+            <p class="tagline">Transform your text into realistic handwritten PDFs instantly</p>
+            <label class="dark-mode-toggle">
+                <input type="checkbox" id="darkMode" aria-label="Dark mode">
+                <span class="toggle-switch"></span>
+                Dark
+            </label>
         </div>
     </header>
 
     <main class="container">
         <div class="panel controls-panel">
-            <h2>Text Input</h2>
-            <div class="text-input-wrapper">
-                <textarea id="textInput" placeholder="Paste your assignment text here...
-
-Example:
-HOME ASSIGNMENT
-
-Name: John Doe
-ID: 12345
-Date: 2025-01-15
-Subject: Mathematics
-
-1. What is the Pythagorean theorem?
-Ans: The Pythagorean theorem states that in a right-angled triangle, the square of the hypotenuse equals the sum of squares of the other two sides. a² + b² = c²
-
-2. Define integration.
-Ans: Integration is the reverse process of differentiation. It is used to find area under curves."></textarea>
-                <div class="text-stats">
-                    <span id="wordCount">0 words</span>
-                    <span id="charCount">0 characters</span>
-                </div>
-            </div>
-
-            <h2>Formatting Controls</h2>
-            <div class="controls-grid">
-                <div class="control-group">
-                    <label for="fontSelect">Font Style</label>
-                    <select id="fontSelect">
-                        {% for font in fonts %}
-                        <option value="{{ font }}" {% if font == 'ComicNeue' %}selected{% endif %}>{{ font }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="fontSize">Font Size: <span id="fontSizeVal">18</span>px</label>
-                    <input type="range" id="fontSize" min="10" max="36" value="18">
-                </div>
-
-                <div class="control-group">
-                    <label for="lineSpacing">Line Spacing: <span id="lineSpacingVal">28</span>px</label>
-                    <input type="range" id="lineSpacing" min="16" max="50" value="28">
-                </div>
-
-                <div class="control-group">
-                    <label for="inkColor">Ink Color</label>
-                    <div class="color-picker-wrap">
-                        <input type="color" id="inkColor" value="#0A1F5C">
-                        <span id="inkColorVal">#0A1F5C</span>
+            <!-- Text area -->
+            <section class="section">
+                <h2 class="section-title">Your text</h2>
+                <div class="text-input-wrapper">
+                    <textarea id="textInput" placeholder="Paste or type your assignment here. Use headings like Name:, Q1., Ans: for best results."></textarea>
+                    <div class="text-stats">
+                        <span id="wordCount">0 words</span>
+                        <span id="charCount">0 chars</span>
                     </div>
                 </div>
+            </section>
 
-                <div class="control-group">
-                    <label for="marginLeft">Left Margin: <span id="marginLeftVal">60</span>px</label>
-                    <input type="range" id="marginLeft" min="20" max="120" value="60">
+            <!-- Quick actions -->
+            <section class="section">
+                <h2 class="section-title">Quick actions</h2>
+                <div class="button-row button-row-wrap">
+                    <button type="button" id="pasteBtn" class="btn btn-action" title="Paste from clipboard (Ctrl+V)">📋 Paste</button>
+                    <button type="button" id="copyTextBtn" class="btn btn-action" title="Copy text to clipboard (Ctrl+C)">📄 Copy</button>
+                    <button type="button" id="copySampleBtn" class="btn btn-action" title="Load example assignment">📝 Sample</button>
+                    <button type="button" id="autoStructureBtn" class="btn btn-action" title="Fix formatting automatically">✨ Structure</button>
+                    <button type="button" id="importFileBtn" class="btn btn-action" title="Import from file">📁 Import</button>
+                    <button type="button" id="undoBtn" class="btn btn-action" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
+                    <button type="button" id="redoBtn" class="btn btn-action" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
+                    <button type="button" id="clearTextBtn" class="btn btn-action btn-action-danger" title="Clear all text">🗑️ Clear</button>
                 </div>
+                <input type="file" id="importFileInput" accept=".txt,.md" style="display: none;">
+            </section>
 
-                <div class="control-group">
-                    <label for="pageStyle">Page Style</label>
-                    <select id="pageStyle">
-                        <option value="blank">Blank White</option>
-                        <option value="cream">Cream Paper</option>
-                        <option value="aged">Aged Paper</option>
-                        <option value="parchment">Parchment</option>
-                        <option value="recycled">Recycled Paper</option>
-                        <option value="notebook" selected>Notebook Ruled</option>
-                        <option value="legal_yellow">Legal Yellow Pad</option>
-                        <option value="grid">Grid Paper</option>
-                    </select>
+            <!-- Templates -->
+            <section class="section">
+                <h2 class="section-title">Start from template</h2>
+                <div class="button-row button-row-wrap">
+                    <button type="button" id="templateAssignment" class="btn btn-template">📚 Assignment</button>
+                    <button type="button" id="templateLab" class="btn btn-template">🔬 Lab record</button>
+                    <button type="button" id="templateSeminar" class="btn btn-template">🎓 Seminar</button>
+                    <button type="button" id="templateInternal" class="btn btn-template">📋 Internal</button>
                 </div>
+            </section>
 
-                <div class="control-group">
-                    <label for="pageSize">Page Size</label>
-                    <select id="pageSize">
-                        <option value="A3">A3 (Large)</option>
-                        <option value="A4" selected>A4 (Standard)</option>
-                        <option value="A5">A5 (Small)</option>
-                        <option value="Letter">Letter</option>
-                        <option value="Legal">Legal</option>
-                    </select>
+            <!-- Presets -->
+            <section class="section">
+                <h2 class="section-title">Style preset</h2>
+                <div class="button-row button-row-wrap">
+                    <button type="button" id="presetNeat" class="btn btn-preset">✨ Neat</button>
+                    <button type="button" id="presetNatural" class="btn btn-preset btn-preset-active">✍️ Natural</button>
+                    <button type="button" id="presetFast" class="btn btn-preset">⚡ Fast</button>
+                    <button type="button" id="resetSettingsBtn" class="btn btn-action" title="Reset all settings">🔄 Reset</button>
                 </div>
-            </div>
+            </section>
 
-            <div class="utility-buttons" style="margin-top: 16px; display: flex; gap: 10px;">
-                <button id="clearTextBtn" class="btn btn-outline" style="flex: 1;">Clear Text</button>
-                <button id="copySampleBtn" class="btn btn-outline" style="flex: 1;">Load Sample</button>
-            </div>
+            <!-- Main controls (font, size, page) -->
+            <section class="section">
+                <h2 class="section-title">Look & feel</h2>
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="fontSelect">Font</label>
+                        <select id="fontSelect">
+                            {% for font in fonts %}
+                            <option value="{{ font }}" {% if font == 'ComicNeue' %}selected{% endif %}>{{ font }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="fontSize">Size <span id="fontSizeVal">18</span></label>
+                        <input type="range" id="fontSize" min="10" max="36" value="18">
+                    </div>
+                    <div class="control-group">
+                        <label for="lineSpacing">Line spacing <span id="lineSpacingVal">28</span></label>
+                        <input type="range" id="lineSpacing" min="16" max="50" value="28">
+                    </div>
+                    <div class="control-group">
+                        <label for="inkColor">Ink color</label>
+                        <div class="color-picker-wrap">
+                            <input type="color" id="inkColor" value="#0A1F5C">
+                            <span id="inkColorVal">#0A1F5C</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="marginLeft">Margin <span id="marginLeftVal">60</span></label>
+                        <input type="range" id="marginLeft" min="20" max="120" value="60">
+                    </div>
+                    <div class="control-group">
+                        <label for="pageStyle">Paper</label>
+                        <select id="pageStyle">
+                            <option value="blank">Plain</option>
+                            <option value="cream">Cream</option>
+                            <option value="aged">Aged</option>
+                            <option value="notebook" selected>Notebook</option>
+                            <option value="legal_yellow">Legal pad</option>
+                            <option value="grid">Grid</option>
+                            <option value="grain">Grain</option>
+                            <option value="fold_crease">Fold crease</option>
+                            <option value="corner_shadow">Corner shadow</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="pageSize">Page size</label>
+                        <select id="pageSize">
+                            <option value="A4" selected>A4</option>
+                            <option value="A3">A3</option>
+                            <option value="A5">A5</option>
+                            <option value="Letter">Letter</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
 
-            <h3>Realism Effects</h3>
-            <div class="toggles-row">
-                <label class="toggle-label">
-                    <input type="checkbox" id="spacingVariation" checked>
-                    <span class="toggle-switch"></span>
-                    Spacing Variation
-                </label>
-                <label class="toggle-label">
-                    <input type="checkbox" id="jitter" checked>
-                    <span class="toggle-switch"></span>
-                    Letter Jitter
-                </label>
-                <label class="toggle-label">
-                    <input type="checkbox" id="inkVariation" checked>
-                    <span class="toggle-switch"></span>
-                    Ink Variation
-                </label>
-            </div>
+            <!-- Generate -->
+            <section class="section section-actions">
+                <button type="button" id="generateBtn" class="btn btn-primary btn-large">🚀 Generate PDF</button>
+                <div id="afterGenerate" class="after-generate after-generate-left" hidden>
+                    <p class="after-generate-label">Your PDF is ready</p>
+                    <div class="button-row button-row-wrap">
+                        <button type="button" id="downloadBtn" class="btn btn-success">📥 Download PDF</button>
+                        <button type="button" id="downloadJpg" class="btn btn-outline">🖼️ JPG</button>
+                        <button type="button" id="downloadPng" class="btn btn-outline">🖼️ PNG</button>
+                        <button type="button" id="printBtn" class="btn btn-outline" title="Print PDF">🖨️ Print</button>
+                        <button type="button" id="newPdfBtn" class="btn btn-outline">🆕 New PDF</button>
+                    </div>
+                    <label class="toggle-label toggle-inline">
+                        <input type="checkbox" id="scanEffect">
+                        <span class="toggle-switch"></span>
+                        Scan effect (for JPG/PNG)
+                    </label>
+                </div>
+            </section>
 
-            <div class="action-buttons">
-                <button id="generateBtn" class="btn btn-primary">Generate PDF</button>
-                <button id="downloadBtn" class="btn btn-success" disabled>Download PDF</button>
-                <button id="downloadJpg" class="btn btn-outline" disabled>Export JPG</button>
-                <button id="downloadPng" class="btn btn-outline" disabled>Export PNG</button>
-            </div>
+            <!-- Advanced (collapsible) -->
+            <details class="section section-advanced" id="advancedDetails">
+                <summary class="section-title" role="button" tabindex="0">Advanced options</summary>
+                <div class="advanced-inner">
+                    <h3 class="sub-label">Realism</h3>
+                    <div class="toggles-row">
+                        <label class="toggle-label"><input type="checkbox" id="spacingVariation" checked><span class="toggle-switch"></span>Spacing</label>
+                        <label class="toggle-label"><input type="checkbox" id="jitter" checked><span class="toggle-switch"></span>Jitter</label>
+                        <label class="toggle-label"><input type="checkbox" id="inkVariation" checked><span class="toggle-switch"></span>Ink variation</label>
+                        <label class="toggle-label"><input type="checkbox" id="wordSizeVariation" checked><span class="toggle-switch"></span>Word size</label>
+                        <label class="toggle-label"><input type="checkbox" id="baselineShift" checked><span class="toggle-switch"></span>Baseline</label>
+                        <label class="toggle-label"><input type="checkbox" id="inkFlow" checked><span class="toggle-switch"></span>Ink flow</label>
+                        <label class="toggle-label"><input type="checkbox" id="gelPen"><span class="toggle-switch"></span>Gel pen</label>
+                    </div>
+                    <div class="control-group compact">
+                        <label for="jitterStrength">Jitter strength <span id="jitterStrengthVal">1.0</span></label>
+                        <input type="range" id="jitterStrength" min="0.2" max="2" step="0.1" value="1">
+                    </div>
+                    <h3 class="sub-label">Layout</h3>
+                    <div class="toggles-row">
+                        <label class="toggle-label"><input type="checkbox" id="marginRule" checked><span class="toggle-switch"></span>Red margin</label>
+                        <label class="toggle-label"><input type="checkbox" id="doubleMargin"><span class="toggle-switch"></span>Double margin</label>
+                        <label class="toggle-label"><input type="checkbox" id="newQuestionOnNewPage"><span class="toggle-switch"></span>New Q on new page</label>
+                        <label class="toggle-label"><input type="checkbox" id="boldQuestion"><span class="toggle-switch"></span>Bold questions</label>
+                        <label class="toggle-label"><input type="checkbox" id="underlineHeadings"><span class="toggle-switch"></span>Underline headings</label>
+                    </div>
+                    <h3 class="sub-label">Signature</h3>
+                    <div class="signature-row">
+                        <input type="file" id="signatureFile" accept="image/*">
+                        <button type="button" id="clearSignatureBtn" class="btn btn-outline btn-small">Clear signature</button>
+                        <canvas id="signaturePreview" width="120" height="50" class="signature-preview" hidden></canvas>
+                    </div>
+                    <h3 class="sub-label">Page Numbers & Headers</h3>
+                    <div class="toggles-row">
+                        <label class="toggle-label"><input type="checkbox" id="pageNumbers"><span class="toggle-switch"></span>Page numbers</label>
+                    </div>
+                    <div class="control-group compact">
+                        <label for="headerText">Header text</label>
+                        <input type="text" id="headerText" placeholder="e.g., Assignment Title" maxlength="200">
+                    </div>
+                    <div class="control-group compact">
+                        <label for="footerText">Footer text</label>
+                        <input type="text" id="footerText" placeholder="e.g., Student Name" maxlength="200">
+                    </div>
+                    <div class="control-group compact">
+                        <label for="watermarkText">Watermark</label>
+                        <input type="text" id="watermarkText" placeholder="e.g., DRAFT" maxlength="100">
+                    </div>
+                </div>
+            </details>
         </div>
 
-        <div class="panel preview-panel">
-            <h2>Live Preview</h2>
-            <div id="previewContainer" class="preview-container">
-                <div id="previewPage" class="preview-page blank">
-                    <div class="preview-placeholder">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        <p>Start typing to see a live preview of your handwritten assignment</p>
+        <div class="panel preview-panel" id="previewPanel">
+            <div class="preview-header">
+                <h2 class="section-title">Preview</h2>
+                <button type="button" id="fullscreenPreviewBtn" class="btn btn-icon" title="Full screen preview">🔍</button>
+            </div>
+            <div id="previewWrapper" class="preview-wrapper">
+                <div id="previewContainer" class="preview-container">
+                    <div id="previewPage" class="preview-page blank a4-preview">
+                        <div class="preview-placeholder">
+                            <p>Type or paste text to see preview</p>
+                        </div>
                     </div>
                 </div>
+                <div id="pdfViewer" class="pdf-viewer" hidden>
+                    <iframe id="pdfFrame" src="" title="Generated PDF"></iframe>
+                </div>
             </div>
-            <div id="pdfViewer" class="pdf-viewer" style="display:none;">
-                <iframe id="pdfFrame" src=""></iframe>
-            </div>
-            <div id="statusBar" class="status-bar">Ready</div>
+            <div id="statusBar" class="status-bar">✨ Ready to generate</div>
         </div>
     </main>
 
-    <footer>
-        <p>Handwritten Assignment Studio</p>
+    <footer style="display: block !important; visibility: visible !important;">
+        <p>Made with ❤️ • Handwritten Assignment Studio • Created by Suhana Kousar</p>
     </footer>
 
-    <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div id="loadingOverlay" class="loading-overlay" hidden>
         <div class="spinner"></div>
-        <p>Generating your handwritten PDF...</p>
+        <p>Generating PDF…</p>
+        <button type="button" id="closeLoadingOverlay" class="btn btn-outline loading-overlay-close">Cancel</button>
+    </div>
+
+    <div id="fullscreenModal" class="fullscreen-modal" hidden>
+        <button type="button" id="closeFullscreen" class="btn btn-icon fullscreen-close" aria-label="Close">×</button>
+        <div id="fullscreenContent" class="fullscreen-content"></div>
     </div>
 
     <script src="/static/script.js"></script>
