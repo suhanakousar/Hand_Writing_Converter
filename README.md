@@ -2,6 +2,8 @@
 
 A full-stack web application that converts academic text into ultra-realistic handwritten-style PDFs.
 
+**Created by Suhana Kousar**
+
 ## Features
 - Text input with live preview
 - Multiple handwriting fonts
@@ -10,44 +12,45 @@ A full-stack web application that converts academic text into ultra-realistic ha
 - Undo/Redo functionality
 - File import
 - Print functionality
-- Created by Suhana Kousar
+- Export to PDF, JPG, PNG
 
-## Deployment Options
+## 🚀 Quick Deploy
 
-### Option 1: Render.com (Recommended for Flask)
-1. Go to https://render.com
-2. Create a new Web Service
-3. Connect your GitHub repository
-4. Set:
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn --bind 0.0.0.0:$PORT app:app`
-   - Environment: Python 3
-5. Add environment variable: `SESSION_SECRET` (generate a random secret)
+### Recommended: Render.com (Easiest)
 
-### Option 2: Railway.app
-1. Go to https://railway.app
-2. New Project → Deploy from GitHub
-3. Select your repository
-4. Railway will auto-detect Python and install dependencies
-5. Add environment variable: `SESSION_SECRET`
+1. Go to https://render.com and sign up with GitHub
+2. Click "New +" → "Web Service"
+3. Connect repository: `suhanakousar/Hand_Writing_Converter`
+4. Configure:
+   - **Build Command**: `pip install -r requirements.txt`
+   - **Start Command**: `gunicorn --bind 0.0.0.0:$PORT app:app`
+5. Add environment variable: `SESSION_SECRET` (generate with: `python -c "import secrets; print(secrets.token_hex(32))"`)
+6. Deploy!
 
-### Option 3: PythonAnywhere
-1. Go to https://www.pythonanywhere.com
-2. Upload your files
-3. Create a web app
-4. Set WSGI file to point to app.py
-5. Add environment variables
-
-### Option 4: Netlify (Requires Refactoring)
-Netlify doesn't natively support Flask. You would need to:
-- Convert Flask routes to Netlify Functions (serverless)
-- Or use Netlify as frontend + separate Flask backend
+**See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions**
 
 ## Local Development
+
 ```bash
+# Install dependencies
 pip install -r requirements.txt
+
+# Run the app
 python app.py
+
+# App runs on http://localhost:5000
 ```
 
 ## Environment Variables
+
 - `SESSION_SECRET`: Flask session secret key (required for production)
+
+## Tech Stack
+
+- **Backend**: Python 3.11, Flask, ReportLab, Pillow
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Server**: Gunicorn
+
+## License
+
+Created by Suhana Kousar

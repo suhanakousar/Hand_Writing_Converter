@@ -1,8 +1,18 @@
 [build]
-  command = "echo 'Flask apps need serverless functions or external backend'"
+  command = "echo 'Building static assets'"
   publish = "."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
 
 [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/server"
+  to = "/index.html"
   status = 200
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
