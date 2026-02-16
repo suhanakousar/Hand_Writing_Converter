@@ -27,17 +27,16 @@ os.makedirs(GENERATED_DIR, exist_ok=True)
 AVAILABLE_FONTS = {}
 
 def register_fonts():
-    font_files = {
-        'DancingScript': 'DancingScript-Regular.ttf',
-        'Pacifico': 'Pacifico-Regular.ttf',
-        'ComicNeue': 'ComicNeue-Regular.ttf',
-    }
-    for name, filename in font_files.items():
-        path = os.path.join(FONTS_DIR, filename)
-        if os.path.exists(path):
+    # Scan fonts directory for all .ttf files
+    for filename in os.listdir(FONTS_DIR):
+        if filename.endswith('.ttf'):
+            name = os.path.splitext(filename)[0]
+            # Clean up name (e.g., QEAntonyLark -> AntonyLark)
+            display_name = name.replace('-Regular', '').replace('QE', '')
+            path = os.path.join(FONTS_DIR, filename)
             try:
-                pdfmetrics.registerFont(TTFont(name, path))
-                AVAILABLE_FONTS[name] = path
+                pdfmetrics.registerFont(TTFont(display_name, path))
+                AVAILABLE_FONTS[display_name] = path
             except Exception:
                 pass
 

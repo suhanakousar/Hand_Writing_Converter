@@ -35,6 +35,12 @@ const FONT_MAP = {
     'ComicNeue': "'Comic Neue', 'Comic Sans MS', cursive"
 };
 
+// Generic fallback for external fonts
+function getFontFamily(fontName) {
+    if (FONT_MAP[fontName]) return FONT_MAP[fontName];
+    return `'${fontName}', cursive, sans-serif`;
+}
+
 function updateStats() {
     const text = textInput.value;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -108,7 +114,7 @@ function updatePreview() {
     .then(data => {
         if (data.lines) {
             const settings = getSettings();
-            const fontFamily = FONT_MAP[settings.font] || "'Comic Sans MS', cursive";
+            const fontFamily = getFontFamily(settings.font);
             const sizeScale = settings.font_size / 18;
             const spacingScale = settings.line_spacing / 28;
 
