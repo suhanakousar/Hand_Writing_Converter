@@ -23,8 +23,18 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SESSION_SECRET', 'dev-secret-key-change-in-prod')
 
 FONTS_DIR = os.path.join(os.path.dirname(__file__), 'fonts')
-GENERATED_DIR = os.path.join(os.path.dirname(__file__), 'generated')
-os.makedirs(GENERATED_DIR, exist_ok=True)
+# Use temp dir on Vercel/serverless where project dir is read-only
+if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    import tempfile
+    GENERATED_DIR = os.path.join(tempfile.gettempdir(), 'handwriting_generated')
+else:
+    GENERATED_DIR = os.path.join(os.path.dirname(__file__), 'generated')
+try:
+    os.makedirs(GENERATED_DIR, exist_ok=True)
+except OSError:
+    import tempfile
+    GENERATED_DIR = os.path.join(tempfile.gettempdir(), 'handwriting_generated')
+    os.makedirs(GENERATED_DIR, exist_ok=True)
 
 AVAILABLE_FONTS = {}
 
